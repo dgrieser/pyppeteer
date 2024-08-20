@@ -59,7 +59,7 @@ class Connection(EventEmitter):
                     resp = await self.connection.recv()
                     if resp:
                         await self._on_message(resp)
-                except (websockets.ConnectionClosed, ConnectionResetError):
+                except (websockets.ConnectionClosed, websockets.ConnectionClosedOK, websockets.ConnectionClosedError, ConnectionResetError):
                     logger.info('connection closed')
                     break
                 await asyncio.sleep(0)
@@ -71,7 +71,7 @@ class Connection(EventEmitter):
             await asyncio.sleep(self._delay)
         try:
             await self.connection.send(msg)
-        except websockets.ConnectionClosed:
+        except (websockets.ConnectionClosed, websockets.ConnectionClosedOK, websockets.ConnectionClosedError):
             logger.error('connection unexpectedly closed')
             callback = self._callbacks.get(callback_id, None)
             if callback and not callback.done():

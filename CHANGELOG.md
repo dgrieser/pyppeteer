@@ -1,6 +1,10 @@
 History
 =======
 
+## Version 2.0.1
+
+ * Updated to websockets >=11.0
+
 ## Version 2.0.0
 
 * Bump pyee version, which removes support for Python 3.7
